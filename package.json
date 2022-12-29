@@ -1,6 +1,6 @@
 {
   "name": "starless-redis",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "devDependencies": {
@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "tsc && node test",
-    "build": "tsc"
+    "build": "tsc",
+    "release": "tsc && npm publish"
   },
   "keywords": [],
   "author": "",
