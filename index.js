@@ -22,12 +22,6 @@ exports.redisClient = {
             }
             if (!client.isOpen) {
                 yield client.connect();
-                try {
-                    console.log(yield client.ping());
-                }
-                catch (err) {
-                    console.log(err.message);
-                }
             }
             return client;
         }
@@ -36,6 +30,8 @@ exports.redisClient = {
             return null;
         }
     }),
+    setJson: (key, value, options = {}) => __awaiter(void 0, void 0, void 0, function* () { return yield exports.redisClient.set(key, JSON.stringify(value), options); }),
+    getJson: (key) => __awaiter(void 0, void 0, void 0, function* () { return JSON.parse(yield exports.redisClient.get(key)); }),
     set: (key, value, options = {}) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             yield client.set(key, value, options);

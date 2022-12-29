@@ -1,10 +1,18 @@
-import { createClient } from "redis";
+import {
+  createClient,
+  RedisClientOptions,
+  RedisFunctions,
+  RedisModules,
+  RedisScripts,
+} from "redis";
 
 let client;
 
 export const redisClient = {
   getNativeClient: () => client,
-  connect: async (options: any = {}) => {
+  connect: async (
+    options: RedisClientOptions<RedisModules, RedisFunctions, RedisScripts> = {}
+  ) => {
     try {
       if (!client) {
         client = createClient(options);
@@ -12,11 +20,6 @@ export const redisClient = {
       }
       if (!client.isOpen) {
         await client.connect();
-        try {
-          console.log(await client.ping());
-        } catch (err) {
-          console.log(err.message);
-        }
       }
       return client;
     } catch (err) {
@@ -24,6 +27,9 @@ export const redisClient = {
       return null;
     }
   },
+  setJson: async (key: string, value: any, options: any = {}) =>
+    await redisClient.set(key, JSON.stringify(value), options),
+  getJson: async (key: string) => JSON.parse(await redisClient.get(key)),
   set: async (key: string, value: string, options: any = {}) => {
     try {
       await client.set(key, value, options);
