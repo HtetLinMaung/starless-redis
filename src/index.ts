@@ -38,12 +38,14 @@ export const redisClient = {
     try {
       if (!client) {
         client = createClient(options);
-        client.on("error", (err) => console.error(`Redis Client Error ${err}`));
+        client.on("error", (err) => {
+          console.error(`Redis Client Error ${err}`);
+          client.disconnect();
+        });
       }
       if (!client.isOpen) {
         await client.connect();
       }
-
       return client;
     } catch (err) {
       console.log(err);

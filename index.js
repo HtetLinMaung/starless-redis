@@ -34,7 +34,10 @@ exports.redisClient = {
         try {
             if (!client) {
                 client = (0, redis_1.createClient)(options);
-                client.on("error", (err) => console.error(`Redis Client Error ${err}`));
+                client.on("error", (err) => {
+                    console.error(`Redis Client Error ${err}`);
+                    client.disconnect();
+                });
             }
             if (!client.isOpen) {
                 yield client.connect();
