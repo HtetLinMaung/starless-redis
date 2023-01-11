@@ -68,7 +68,11 @@ export const redisClient = {
       return value;
     }
   },
-  getJsonOrDefault: async (key: string, defaultValue: any = null) => {
+  getJsonOrDefault: async (
+    key: string,
+    defaultValue: any = null,
+    options: SetOptions = {}
+  ) => {
     let value: any = await redisClient.getJson(key);
     if (!value) {
       if (typeof defaultValue == "function") {
@@ -83,6 +87,7 @@ export const redisClient = {
       } else {
         value = defaultValue;
       }
+      redisClient.setJson(key, value, options);
     }
     return value;
   },
@@ -126,7 +131,11 @@ export const redisClient = {
       return getCache(key);
     }
   },
-  getOrDefault: async (key: string, defaultValue: any = null) => {
+  getOrDefault: async (
+    key: string,
+    defaultValue: any = null,
+    options: SetOptions = {}
+  ) => {
     let value: any = await redisClient.get(key);
     if (!value) {
       if (typeof defaultValue == "function") {
@@ -141,6 +150,7 @@ export const redisClient = {
       } else {
         value = defaultValue;
       }
+      redisClient.set(key, value, options);
     }
     return value;
   },

@@ -62,7 +62,7 @@ exports.redisClient = {
             return value;
         }
     }),
-    getJsonOrDefault: (key, defaultValue = null) => __awaiter(void 0, void 0, void 0, function* () {
+    getJsonOrDefault: (key, defaultValue = null, options = {}) => __awaiter(void 0, void 0, void 0, function* () {
         let value = yield exports.redisClient.getJson(key);
         if (!value) {
             if (typeof defaultValue == "function") {
@@ -77,6 +77,7 @@ exports.redisClient = {
             else {
                 value = defaultValue;
             }
+            exports.redisClient.setJson(key, value, options);
         }
         return value;
     }),
@@ -117,7 +118,7 @@ exports.redisClient = {
             return getCache(key);
         }
     }),
-    getOrDefault: (key, defaultValue = null) => __awaiter(void 0, void 0, void 0, function* () {
+    getOrDefault: (key, defaultValue = null, options = {}) => __awaiter(void 0, void 0, void 0, function* () {
         let value = yield exports.redisClient.get(key);
         if (!value) {
             if (typeof defaultValue == "function") {
@@ -132,6 +133,7 @@ exports.redisClient = {
             else {
                 value = defaultValue;
             }
+            exports.redisClient.set(key, value, options);
         }
         return value;
     }),
